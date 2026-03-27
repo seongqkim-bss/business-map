@@ -1,0 +1,22 @@
+{
+  "pageOverrides": {
+    "businessArea": {
+      "imageWeight": "high",
+      "cardDensity": "medium",
+      "accentColor": "#4aa5f3",
+      "typographyScale": "large"
+    },
+    "listPage": {
+      "imageWeight": "low",
+      "cardDensity": "high",
+      "surfaceUsage": "high",
+      "typographyScale": "medium"
+    },
+    "detailPage": {
+      "imageWeight": "medium",
+      "cardDensity": "medium",
+      "dividerUsage": "high",
+      "typographyScale": "small"
+    }
+  }
+}

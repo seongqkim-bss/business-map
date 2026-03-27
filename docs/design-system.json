@@ -1,0 +1,107 @@
+{
+  "layout": {
+    "containerWidth": 1200,
+    "pagePadding": 24,
+    "sectionGap": 24,
+    "mobileColumns": 1,
+    "contentAlignment": "center"
+  },
+  "typography": {
+    "rootFontSize": 10,
+    "fontFamilyBase": "\"Pretendard\", \"Apple SD Gothic Neo\", \"Noto Sans KR\", \"Malgun Gothic\", sans-serif",
+    "heading": {
+      "h1": {
+        "fontSize": 60,
+        "fontWeight": 800,
+        "lineHeight": 1.5,
+        "color": "#2d6ab2"
+      },
+      "h2": {
+        "fontSize": 28,
+        "fontWeight": 700,
+        "lineHeight": 1.6,
+        "color": "#7a7b7a"
+      },
+      "sectionTitle": {
+        "fontSize": 36,
+        "fontWeight": 800,
+        "lineHeight": 1.5,
+        "color": "#181818"
+      },
+      "cardTitle": {
+        "fontSize": 28,
+        "fontWeight": 700,
+        "lineHeight": 1.6,
+        "color": "#181818"
+      },
+      "rowTitle": {
+        "fontSize": 24,
+        "fontWeight": 700,
+        "lineHeight": 1.6,
+        "color": "#181818"
+      },
+      "bgTitle": {
+        "fontSize": 32,
+        "fontWeight": 600,
+        "lineHeight": 1.5,
+        "color": "#ffffff"
+      }
+    },
+    "body": {
+      "large": {
+        "fontSize": 20,
+        "fontWeight": 400,
+        "lineHeight": 1.6,
+        "color": "#181818"
+      },
+      "medium": {
+        "fontSize": 16,
+        "fontWeight": 400,
+        "lineHeight": 1.6,
+        "color": "#181818"
+      },
+      "small": {
+        "fontSize": 14,
+        "fontWeight": 400,
+        "lineHeight": 1.6,
+        "color": "#7a7b7a"
+      }
+    }
+  },
+  "color": {
+    "primary": "#2563ab",
+    "primaryLight": "#eff6ff",
+    "accentBlue": "#4aa5f3",
+    "success": "#16a34a",
+    "warning": "#f59e0b",
+    "neutral900": "#111827",
+    "neutral600": "#6b7280",
+    "neutral200": "#e5e7eb",
+    "bg": "#ffffff",
+    "surface": "#f8fafc"
+  },
+  "border": {
+    "hairline": "1px solid #e5e7eb",
+    "radiusCard": 12,
+    "radiusButton": 10
+  },
+  "image": {
+    "style": "real-photo",
+    "subject": ["people", "site", "daily-life"],
+    "crop": "cover",
+    "treatment": "natural"
+  },
+  "component": {
+    "button": {
+      "style": "rounded-solid",
+      "radius": 10
+    },
+    "card": {
+      "style": "white-surface",
+      "shadow": "0 8px 20px rgba(0,0,0,0.06)"
+    },
+    "divider": {
+      "style": "1px solid #e5e7eb"
+    }
+  }
+}
