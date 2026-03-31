@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>사회연대은행 사업구조</title>
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<style>
+/* ═══ DARK MODE TOKENS ═══ */
+:root{
+  /* Palette */
+  --BG:#0d1117;       /* page background */
+  --SURF:#161c26;     /* card / panel surface */
+  --SURF2:#1e2636;    /* elevated surface */
+  --B:#006CB7;        /* dark blue */
+  --SKY:#58C5FF;      /* sky blue accent */
+  --GR:#7B7875;       /* gray */
+  --TXT:#d4dae6;      /* primary text */
+  --TXT2:#7B7875;     /* secondary text */
+  --BDR:rgba(88,197,255,.12); /* border */
+  --BDR2:rgba(123,120,117,.18);
+
+  /* Blue tints */
+  --B08:rgba(0,108,183,.08);--B15:rgba(0,108,183,.15);--B25:rgba(0,108,183,.25);
+  --B40:rgba(0,108,183,.40);--B60:rgba(0,108,183,.60);
+  /* Sky tints */
+  --SKY10:rgba(88,197,255,.10);--SKY20:rgba(88,197,255,.20);
+  /* Gray tints */
+  --G08:rgba(123,120,117,.08);--G15:rgba(123,120,117,.15);--G28:rgba(123,120,117,.28);
+
+  --sp1:4px;--sp2:8px;--sp3:12px;--sp4:16px;--sp5:20px;--sp6:24px;--sp7:28px;--sp8:32px;--sp10:40px;
+  --r4:4px;--r8:8px;--r12:12px;--r16:16px;
+  --sh0:0 2px 8px rgba(0,0,0,.25);--sh1:0 4px 16px rgba(0,0,0,.35);--sh2:0 8px 28px rgba(0,0,0,.45);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+body{
+  font-family:'Pretendard',sans-serif;
+  background:var(--BG);color:var(--TXT);
+  background-image:radial-gradient(circle,rgba(88,197,255,.06) 1px,transparent 1px);
+  background-size:28px 28px;background-attachment:fixed;min-height:100vh;
+}
+
+/* ═══ HERO ═══ */
+.hero{background:linear-gradient(135deg,#071428,var(--B));position:relative;overflow:hidden;padding:0 var(--sp10)}
+.hero::before{content:'';position:absolute;top:-60%;right:-5%;width:45%;height:280%;background:var(--B40);transform:skewX(-14deg);pointer-events:none}
+.hero::after{content:'';position:absolute;top:-60%;right:8%;width:2px;height:280%;background:rgba(88,197,255,.18);transform:skewX(-14deg);pointer-events:none}
+.hero-inner{max-width:1200px;margin:0 auto;padding:18px 0 16px;display:flex;align-items:center;justify-content:space-between;gap:var(--sp6);position:relative;z-index:1}
+.hero-eyebrow{font-size:11px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:rgba(88,197,255,.6);margin-bottom:4px}
+.hero-title{font-size:28px;font-weight:800;color:#fff;letter-spacing:-0.8px;line-height:1.15}
+.hero-title em{font-style:normal;color:rgba(88,197,255,.7);font-weight:500;font-size:16px;display:inline;margin-left:10px;letter-spacing:0}
+.hero-right{text-align:right;flex-shrink:0}
+.hero-meta{font-size:13px;color:rgba(255,255,255,.4);line-height:1.8}
+.hero-badge{display:inline-block;background:var(--SKY20);border:1px solid var(--SKY10);color:var(--SKY);font-size:12px;font-weight:700;padding:4px 12px;border-radius:20px;letter-spacing:.5px;margin-bottom:6px}
+
+/* ═══ CONTROLS ═══ */
+.ctrl-bar{background:rgba(13,17,23,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--BDR);position:sticky;top:0;z-index:50;box-shadow:0 2px 16px rgba(0,0,0,.4)}
+.ctrl-inner{max-width:1200px;margin:0 auto;padding:0 var(--sp10);height:50px;display:flex;align-items:center;gap:var(--sp3);flex-wrap:nowrap}
+.ctrl-btn{display:inline-flex;align-items:center;gap:6px;padding:6px 13px;border:1px solid var(--BDR2);border-radius:var(--r8);background:var(--G08);color:var(--TXT);font-family:'Pretendard',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;white-space:nowrap}
+.ctrl-btn:hover{border-color:var(--SKY);color:var(--SKY);background:var(--SKY10)}
+.ctrl-btn.v1only{display:none}
+.ctrl-div{width:1px;height:18px;background:var(--BDR2);flex-shrink:0}
+
+.ver-wrap{display:flex;align-items:center;gap:8px;margin-left:auto}
+.ver-label{font-size:11px;color:var(--TXT2);font-weight:500;white-space:nowrap}
+.ver-select{
+  appearance:none;-webkit-appearance:none;
+  padding:6px 28px 6px 11px;border:1px solid var(--B);border-radius:var(--r8);
+  background:var(--B08);color:var(--SKY);
+  font-family:'Pretendard',sans-serif;font-size:12px;font-weight:700;cursor:pointer;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%2358C5FF' stroke-width='2.5'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 8px center;
+  transition:all .15s;
+}
+.ver-select:focus{outline:none;box-shadow:0 0 0 2px var(--SKY20)}
+.ver-select option{background:#1e2636;color:var(--TXT)}
+
+/* legend */
+.ctrl-legend{display:none;align-items:center;gap:12px;margin-left:var(--sp3)}
+.ctrl-legend.active{display:flex}
+.leg{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--TXT2);font-weight:500}
+.leg-pip{width:8px;height:8px;border-radius:2px;flex-shrink:0}
+
+/* ═══ VERSION PANELS ═══ */
+.ver-panel{display:none}
+.ver-panel.active{display:block}
+
+/* ─────────────── V01 DARK ─────────────── */
+.ver-v01 .canvas{padding:24px 28px 48px;max-width:1280px;margin:0 auto}
+.ver-v01 .info-bar{background:var(--B08);border-left:3px solid var(--SKY);padding:10px 28px;font-size:12px;color:var(--SKY);display:flex;align-items:center;gap:10px;opacity:.85}
+.ver-v01 .root-node{background:linear-gradient(135deg,var(--SURF2),#0d2240);color:#fff;border-radius:14px;padding:14px 24px;text-align:center;margin:0 auto 28px;max-width:480px;box-shadow:var(--sh2);border:1px solid var(--BDR)}
+.ver-v01 .r-title{font-size:1.1rem;font-weight:800;color:#fff}
+.ver-v01 .r-sub{font-size:.75rem;color:var(--TXT2);margin-top:4px}
+.ver-v01 .pillars{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+.ver-v01 .pillar{border-radius:12px;overflow:hidden;box-shadow:var(--sh1);border:1px solid var(--BDR)}
+.ver-v01 .pillar-head{padding:14px 16px;color:#fff;font-weight:700;font-size:.9rem;display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none}
+.ver-v01 .pnum{width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;flex-shrink:0}
+.ver-v01 .ptitle{flex:1}
+.ver-v01 .peng{font-size:.66rem;opacity:.6;font-weight:400;display:block;margin-top:1px}
+.ver-v01 .toggle-btn{font-size:.9rem;transition:transform .2s}
+.ver-v01 .pillar-head.collapsed .toggle-btn{transform:rotate(-90deg)}
+.ver-v01 .pillar-body{background:var(--SURF);overflow:hidden}
+.ver-v01 .pillar-body.collapsed{display:none}
+.ver-v01 .p1 .pillar-head{background:linear-gradient(135deg,#004f8a,var(--B))}
+.ver-v01 .p2 .pillar-head{background:linear-gradient(135deg,#004a3a,#006b52)}
+.ver-v01 .p3 .pillar-head{background:linear-gradient(135deg,#1a3a6e,#2a5298)}
+.ver-v01 .section{border-bottom:1px solid var(--G08)}
+.ver-v01 .section:last-child{border-bottom:none}
+.ver-v01 .section-head{padding:10px 14px;display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none;transition:background .15s}
+.ver-v01 .section-head:hover{background:var(--G08)}
+.ver-v01 .section-icon{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.ver-v01 .section-title{font-size:.82rem;font-weight:700;color:var(--TXT);flex:1}
+.ver-v01 .section-badge{font-size:.64rem;padding:2px 6px;border-radius:10px;font-weight:600;white-space:nowrap}
+.ver-v01 .badge-high{background:var(--B15);color:var(--SKY)}
+.ver-v01 .badge-mid{background:rgba(0,107,82,.2);color:#4dd4a6}
+.ver-v01 .badge-new{background:rgba(88,197,255,.12);color:var(--SKY)}
+.ver-v01 .badge-cross{background:rgba(255,120,150,.1);color:#ff8fab}
+.ver-v01 .section-toggle{font-size:.7rem;color:var(--TXT2);transition:transform .18s}
+.ver-v01 .section-toggle.open{transform:rotate(90deg)}
+.ver-v01 .items{display:none;padding:0 14px 10px 28px}
+.ver-v01 .items.open{display:block}
+.ver-v01 .item{padding:5px 8px;margin:3px 0;border-radius:6px;font-size:.76rem;color:var(--TXT);display:flex;align-items:flex-start;gap:7px;border-left:2px solid var(--BDR2)}
+.ver-v01 .item:hover{background:var(--G08)}
+.ver-v01 .item-dot{width:4px;height:4px;border-radius:50%;background:var(--GR);margin-top:6px;flex-shrink:0}
+.ver-v01 .item-text{flex:1;line-height:1.45}
+.ver-v01 .item-tags{display:flex;flex-wrap:wrap;gap:3px;margin-top:3px}
+.ver-v01 .tag{font-size:.62rem;padding:1px 5px;border-radius:4px;font-weight:600}
+.ver-v01 .tag-gov{background:var(--B15);color:var(--SKY)}
+.ver-v01 .tag-csr{background:rgba(0,107,82,.2);color:#4dd4a6}
+.ver-v01 .tag-self{background:rgba(255,165,0,.12);color:#ffb347}
+.ver-v01 .tag-new{background:var(--SKY10);color:var(--SKY)}
+.ver-v01 .tag-cross{background:rgba(255,120,150,.1);color:#ff8fab;border:1px dashed rgba(255,120,150,.3)}
+.ver-v01 .bottom-panels{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:20px}
+.ver-v01 .panel{background:var(--SURF);border-radius:12px;padding:18px;box-shadow:var(--sh1);border:1px solid var(--BDR)}
+.ver-v01 .panel-title{font-size:.88rem;font-weight:700;color:var(--TXT);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--BDR2)}
+.ver-v01 .weight-row{display:flex;align-items:center;gap:10px;margin:7px 0}
+.ver-v01 .weight-label{font-size:.74rem;color:var(--TXT);width:180px;flex-shrink:0}
+.ver-v01 .weight-bar-bg{flex:1;background:var(--G08);border-radius:4px;height:14px;overflow:hidden}
+.ver-v01 .weight-bar{height:100%;border-radius:4px;padding-left:5px;font-size:.62rem;font-weight:700;color:#fff;transition:width .8s;display:flex;align-items:center}
+.ver-v01 .weight-count{font-size:.7rem;color:var(--TXT2);white-space:nowrap}
+.ver-v01 .overlap-item{display:flex;align-items:flex-start;gap:8px;padding:8px;margin:4px 0;background:rgba(88,197,255,.05);border-radius:8px;border:1px dashed rgba(88,197,255,.2)}
+.ver-v01 .overlap-icon{font-size:.95rem;flex-shrink:0}
+.ver-v01 .overlap-text{font-size:.74rem;color:var(--TXT);line-height:1.5}
+.ver-v01 .overlap-text strong{color:var(--SKY)}
+.ver-v01 .overlap-pillars{display:flex;gap:4px;margin-top:4px;flex-wrap:wrap}
+.ver-v01 .op-badge{font-size:.62rem;padding:1px 6px;border-radius:10px;font-weight:600}
+.ver-v01 .v2-panel{background:linear-gradient(135deg,var(--SURF2),#0d2240);border-radius:12px;padding:18px 22px;margin-top:16px;border:1px solid var(--BDR)}
+.ver-v01 .v2-title{font-size:.9rem;font-weight:700;margin-bottom:12px;color:var(--TXT)}
+.ver-v01 .v2-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.ver-v01 .v2-card{background:rgba(88,197,255,.06);border-radius:8px;padding:11px 13px;border:1px solid var(--BDR)}
+.ver-v01 .v2-card-title{font-size:.75rem;font-weight:700;color:var(--SKY);margin-bottom:6px}
+.ver-v01 .v2-card-body{font-size:.7rem;color:var(--TXT2);line-height:1.55}
+.ver-v01 .v2-card-body li{margin:3px 0;padding-left:12px;position:relative;list-style:none}
+.ver-v01 .v2-card-body li::before{content:'→';position:absolute;left:0;color:var(--B);font-size:.68rem}
+.ver-v01 .panel-footer{text-align:center;padding:18px;font-size:11px;color:var(--TXT2)}
+@media(max-width:960px){
+  .ver-v01 .pillars{grid-template-columns:1fr}
+  .ver-v01 .bottom-panels{grid-template-columns:1fr}
+  .ver-v01 .v2-grid{grid-template-columns:1fr}
+}
+
+/* ─────────────── V02 DARK ─────────────── */
+.ver-v02 .main{max-width:1200px;margin:0 auto;padding:var(--sp10) var(--sp10) 72px}
+.ver-v02 .root-wrap{display:flex;flex-direction:column;align-items:center}
+.ver-v02 .root-card{background:linear-gradient(135deg,var(--SURF2),#0d2240);color:#fff;border-radius:var(--r16);padding:18px 40px;text-align:center;box-shadow:var(--sh2);border:1px solid var(--BDR);position:relative;overflow:hidden}
+.ver-v02 .root-card::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent,transparent 60px,rgba(88,197,255,.02) 60px,rgba(88,197,255,.02) 61px);pointer-events:none}
+.ver-v02 .root-name{font-size:20px;font-weight:800;letter-spacing:-.4px;position:relative;color:#fff}
+.ver-v02 .root-since{font-size:13px;color:var(--TXT2);margin-top:3px;font-weight:400;position:relative}
+.ver-v02 .branch{width:100%;max-width:960px;position:relative;height:40px;flex-shrink:0}
+.ver-v02 .branch::before{content:'';position:absolute;left:50%;top:0;width:1px;height:18px;background:var(--BDR2);transform:translateX(-50%)}
+.ver-v02 .branch::after{content:'';position:absolute;left:10%;right:10%;top:18px;height:1px;background:var(--BDR2)}
+.ver-v02 .branch-tick{position:absolute;top:18px;left:10%;right:10%;display:flex;justify-content:space-between}
+.ver-v02 .branch-tick span{display:block;width:1px;height:22px;background:var(--BDR2)}
+.ver-v02 .columns{display:grid;grid-template-columns:1fr 1fr .7fr;gap:var(--sp7);align-items:start}
+.ver-v02 .col-title{border-radius:var(--r12);padding:14px 20px;margin-bottom:var(--sp5);position:relative;overflow:hidden}
+.ver-v02 .col-title-text{font-size:16px;font-weight:800;letter-spacing:-.4px}
+.ver-v02 .col-title-eng{display:block;font-size:11px;opacity:.55;margin-top:3px;letter-spacing:.3px}
+.ver-v02 .ct-a{background:var(--B);color:#fff}
+.ver-v02 .ct-a::after{content:'';position:absolute;top:-50%;right:-8%;width:40%;height:200%;background:rgba(255,255,255,.07);transform:skewX(-18deg);pointer-events:none}
+.ver-v02 .ct-b{background:var(--SURF2);color:var(--SKY);border:1.5px solid var(--B25)}
+.ver-v02 .ct-c{background:var(--SURF2);color:var(--TXT);border:1px solid var(--BDR2)}
+.ver-v02 .lane{display:flex;flex-direction:column;gap:var(--sp3)}
+.ver-v02 .sec-label{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--TXT2);padding:0 4px}
+.ver-v02 .arrow-row{display:flex;justify-content:center;color:var(--BDR2);padding:var(--sp1) 0}
+.ver-v02 .h-sep{padding-top:var(--sp3);border-top:1px dashed var(--BDR2)}
+.ver-v02 .card-stack{display:flex;flex-direction:column;gap:var(--sp2)}
+.ver-v02 .card{border-radius:var(--r12);padding:var(--sp4);transition:box-shadow .15s,border-color .15s;position:relative}
+.ver-v02 .card:not(.card-static){cursor:pointer}
+.ver-v02 .card:not(.card-static):hover{box-shadow:var(--sh1);border-color:rgba(88,197,255,.25)!important}
+.ver-v02 .card-b{background:var(--SURF);border:1px solid var(--B15);box-shadow:var(--sh0)}
+.ver-v02 .card-g{background:var(--SURF);border:1px solid var(--BDR2);box-shadow:var(--sh0)}
+.ver-v02 .card-static{opacity:.65}
+.ver-v02 .card-title{font-size:14px;font-weight:700;letter-spacing:-.2px;color:var(--TXT)}
+.ver-v02 .card-desc{font-size:11px;color:var(--TXT2);margin-top:3px;line-height:1.5}
+.ver-v02 .trig{display:flex;align-items:center;gap:6px;margin-top:var(--sp3);padding-top:var(--sp3);border-top:1px solid var(--G08);font-size:11px;color:var(--TXT2);font-weight:600;user-select:none;transition:color .15s}
+.ver-v02 .trig.open{color:var(--SKY)}
+.ver-v02 .trig-icon{width:18px;height:18px;border-radius:50%;background:var(--G08);display:flex;align-items:center;justify-content:center;transition:background .15s,transform .15s}
+.ver-v02 .trig.open .trig-icon{background:var(--B15);transform:rotate(90deg)}
+.ver-v02 .dlist{overflow:hidden;max-height:0;transition:max-height .3s ease}
+.ver-v02 .dlist.open{max-height:800px}
+.ver-v02 .dlist-inner{padding-top:var(--sp3);display:flex;flex-direction:column;gap:var(--sp2)}
+.ver-v02 .ditem{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--sp3);padding:var(--sp2) var(--sp3);background:var(--G08);border-radius:var(--r8)}
+.ver-v02 .ditem-name{font-size:12px;color:var(--TXT);line-height:1.4;flex:1}
+.ver-v02 .ditem-tags{display:flex;gap:4px;flex-wrap:wrap;flex-shrink:0}
+.ver-v02 .tag{display:inline-block;font-size:10px;font-weight:600;padding:2px 6px;border-radius:var(--r4);letter-spacing:.2px}
+.ver-v02 .t-gov{background:var(--B15);color:var(--SKY)}
+.ver-v02 .t-csr{background:var(--G15);color:var(--GR)}
+.ver-v02 .t-self{background:rgba(255,165,0,.12);color:#ffb347}
+.ver-v02 .t-new{background:var(--SKY10);color:var(--SKY)}
+.ver-v02 .fund-intro{font-size:12px;color:var(--TXT2);line-height:1.7;padding:var(--sp4);background:var(--G08);border-radius:var(--r12);border-left:3px solid var(--B)}
+.ver-v02 .fund-intro strong{color:var(--SKY);display:block;margin-bottom:4px}
+.ver-v02 .bottom{display:grid;grid-template-columns:1fr 1fr;gap:var(--sp7);margin-top:var(--sp10)}
+.ver-v02 .panel{background:var(--SURF);border-radius:var(--r16);padding:var(--sp6);box-shadow:var(--sh1);border:1px solid var(--BDR)}
+.ver-v02 .panel-hd{font-size:14px;font-weight:700;margin-bottom:var(--sp5);padding-bottom:var(--sp4);border-bottom:1px solid var(--BDR2);display:flex;align-items:center;gap:var(--sp2);color:var(--TXT)}
+.ver-v02 .panel-hd-dot{width:7px;height:7px;background:var(--SKY);border-radius:50%}
+.ver-v02 .w-item{display:flex;align-items:center;gap:var(--sp3);margin:var(--sp2) 0}
+.ver-v02 .w-label{font-size:12px;color:var(--TXT);width:160px;flex-shrink:0;font-weight:500}
+.ver-v02 .w-track{flex:1;height:7px;background:var(--G08);border-radius:4px;overflow:hidden}
+.ver-v02 .w-fill{height:100%;border-radius:4px;transform:scaleX(0);transform-origin:left;transition:transform .8s cubic-bezier(.4,0,.2,1)}
+.ver-v02 .w-val{font-size:11px;color:var(--TXT2);width:72px;text-align:right;flex-shrink:0}
+.ver-v02 .src-stack{display:flex;flex-direction:column;gap:var(--sp3)}
+.ver-v02 .src-item{display:flex;align-items:flex-start;gap:var(--sp3);padding:var(--sp3) var(--sp4);background:var(--G08);border-radius:var(--r8)}
+.ver-v02 .src-icon{font-size:18px;flex-shrink:0}
+.ver-v02 .src-text{font-size:12px;color:var(--TXT);line-height:1.6}
+.ver-v02 .src-text strong{display:block;font-weight:700;color:var(--SKY)}
+.ver-v02 .panel-footer{text-align:center;padding:18px;font-size:11px;color:var(--TXT2)}
+@media(max-width:960px){
+  .ver-v02 .columns{grid-template-columns:1fr}
+  .ver-v02 .bottom{grid-template-columns:1fr}
+}
+
+/* ═══ RESPONSIVE ═══ */
+@media(max-width:960px){
+  .hero-title{font-size:22px}
+  .ctrl-inner{padding:0 var(--sp6)}
+}
+@media(max-width:600px){
+  .ctrl-legend{display:none!important}
+  .hero-title{font-size:18px}
+  .hero-title em{font-size:13px}
+}
+
+/* ═══ ANIMATIONS ═══ */
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.ver-panel.active .ai{animation:fadeUp .35s ease both}
+.ver-panel.active .d0{animation-delay:0s}.ver-panel.active .d1{animation-delay:.07s}
+.ver-panel.active .d2{animation-delay:.13s}.ver-panel.active .d3{animation-delay:.19s}
+.ver-panel.active .d4{animation-delay:.25s}.ver-panel.active .d5{animation-delay:.32s}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-eyebrow">Business Architecture</div>
+      <h1 class="hero-title">사회연대은행<em>(사)함께만드는세상</em></h1>
+    </div>
+    <div class="hero-right">
+      <div class="hero-badge" id="hero-badge">v 1.0 · 2026.03.24</div>
+      <div class="hero-meta">Since 2003<br>사회적금융 · 공동체</div>
+    </div>
+  </div>
+</header>
+
+<!-- CONTROLS -->
+<div class="ctrl-bar">
+  <div class="ctrl-inner">
+    <button class="ctrl-btn" onclick="expandAll()">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>전체 펼치기
+    </button>
+    <button class="ctrl-btn" onclick="collapseAll()">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 15l-6-6-6 6"/></svg>전체 접기
+    </button>
+    <div class="ctrl-div"></div>
+    <button class="ctrl-btn v1only" id="btn-overlap" onclick="highlightOverlap()">⚡ 경계 하이라이트</button>
+
+    <!-- V01 legend -->
+    <div class="ctrl-legend" id="legend-v01">
+      <div class="leg"><div class="leg-pip" style="background:#58C5FF"></div>정부수탁</div>
+      <div class="leg"><div class="leg-pip" style="background:#4dd4a6"></div>CSR</div>
+      <div class="leg"><div class="leg-pip" style="background:#ffb347"></div>자체기금</div>
+      <div class="leg"><div class="leg-pip" style="background:#ff8fab;border:1px dashed rgba(255,120,150,.5)"></div>경계</div>
+      <div class="leg"><div class="leg-pip" style="background:#58C5FF;opacity:.6"></div>신규</div>
+    </div>
+    <!-- V02 legend -->
+    <div class="ctrl-legend" id="legend-v02">
+      <div class="leg"><div class="leg-pip" style="background:#58C5FF"></div>정부수탁</div>
+      <div class="leg"><div class="leg-pip" style="background:#7B7875"></div>CSR</div>
+      <div class="leg"><div class="leg-pip" style="background:#ffb347"></div>자체기금</div>
+      <div class="leg"><div class="leg-pip" style="background:#58C5FF;opacity:.5"></div>신규</div>
+    </div>
+
+    <div class="ver-wrap">
+      <span class="ver-label">버전 선택</span>
+      <select class="ver-select" id="ver-select" onchange="switchVersion(this.value)">
+        <option value="v01">v 1.0 · 2026.03.24</option>
+        <option value="v02">v 2.0 · 2026.03.31</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ V01 PANEL ════════════ -->
+<div id="panel-v01" class="ver-panel ver-v01 active">
+
+  <div class="info-bar">
+    ℹ️ <span>섹션 제목을 클릭하면 세부 사업이 펼쳐집니다. 문서 기반 분석으로 구성한 사업구조 v1.0입니다.</span>
+  </div>
+
+  <div class="canvas">
+
+    <div class="root-node ai d1">
+      <div class="r-title">(사)함께만드는세상 · 사회연대은행</div>
+      <div class="r-sub">Since 2003 · 사회적금융을 통해 더불어 함께 사는 건강한 공동체를 만든다</div>
+    </div>
+
+    <div class="pillars">
+
+      <!-- 기둥 1 -->
+      <div class="pillar p1 ai d2" id="pillar1">
+        <div class="pillar-head" onclick="v01_togglePillar(1)">
+          <div class="pnum">1</div>
+          <div class="ptitle">사회적금융 비즈니스<span class="peng">Social Finance · Inclusive Finance</span></div>
+          <span class="toggle-btn">▼</span>
+        </div>
+        <div class="pillar-body" id="pb1">
+
+          <div class="section">
+            <div class="section-head" onclick="v01_toggleSection(this)">
+              <div class="section-icon" style="background:#2563ab"></div>
+              <div class="section-title">A. 마이크로크레딧 (소상공인 창업·경영안정)</div>
+              <span class="section-badge badge-high">★★★★★ 최대</span>
+              <span class="section-toggle open">▶</span>
+            </div>
+            <div class="items open">
+              <div class="item"><div class="item-dot"></div><div class="item-text">서울형 마이크로크레딧 창업지원사업<div class="item-tags"><span class="tag tag-gov">정부수탁</span><span class="tag tag-gov">서울시</span></div></div></div>
+              <div class="item"><div class="item-dot"></div><div class="item-text">강남구 희망실현창구 창업지원사업<div class="item-tags"><span class="tag tag-gov">정부수탁</span><span class="tag tag-gov">강남구</span></div></div></div>
+              <div class="item tag-cross"><div class="item-dot"></div><div class="item-text"><strong>경기 극저신용대출 2.0</strong> (★ 신규 광역 확장)<div class="item-tags"><span class="tag tag-gov">경기도</span><span class="tag tag-new">2026新</span><span class="tag tag-cross">경계</span></div></div></div>
+              <div class="item"><div class="item-dot"></div><div class="item-text">저소득 소상공인 희망대출<div class="item-tags"><span class="tag tag-csr">CSR</span><span class="tag tag-csr">KDB나눔재단</span></div></div></div>
+              <div class="item"><div class="item-dot"></div><div class="item-text">SGI서울보증 소상공인 대출지원<div class="item-tags"><span class="tag tag-csr">CSR</span></div></div></div>
+              <div class="item"><div class="item-dot"></div><div class="item-text">소상공인 경영환경 개선지원 (카카오 같이가치)<div class="item-tags"><span class="tag tag-csr">CSR</span></div></div></div>
+              <div class="item"><div class="item-dot"></div><div class="item-text">JP모건 소상공인 지원사업<div class="item-tags"><span class="tag tag-csr">JP모건</span></div></div></div>
+              <div class="item"><div class="item-dot"></div><div class="item-text">HSBC 저소득 청년창업가 지원사업<div class="item-tags"><span class="tag tag-csr">CSR</span><span class="tag tag-cross">청년↔소상공인</span></div></div></div>
+              <div class="item"><div class="item-dot"></div><div class="item-text">디지털 마케팅·역량강화 교육 / 온라인 판로개척 지원<div class="item-tags"><span class="tag tag-csr">성장지원</span></div></div></div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-head" onclick="v01_toggleSection(this)">
+              <div class="section-icon" style="background:#3b82f6"></div>
+              <div class="section-title">B. 청년통합 지원 (포용금융·금융위기 극복)</div>
+              <span class="section-badge badge-high">★★★★★ 최대</span>
+              <span class="section-toggle open">▶</span>
+            </div>
+            <div class="items open">
+              <div class="item"><div class="item-dot"></div><div class="item-text">청년 고금리 대환대출 — 두나무 넥스트스테퍼즈<div class="item-tags"><span class="tag tag-csr">두나무</span></div></div></div>
+              <div class="item"><div class="item-dot"></div><div class="item-text">청년 긴급생계비 대출 (신복위 등)<div class="item-tags"><span class="tag tag-gov">정부</span><span class="tag tag-csr">CSR</span></div></div></div>
+              <div class="item"><div class="item-dot"></div><div class="item-text">카카오뱅크 대환 대출 (고금리 전환)<div class="item-tags"><span class="tag tag-csr">CSR</span><span class="tag tag-cross">함께온기금 연계</span></div></div></div>
+              <div class="item"><div class="item-dot"></div><div class="item-text">청년 자산형성·신용형성 프로그램 (씨앗저축 등)<div class="item-tags"><span class="tag tag-csr">CSR</span></div></div></div>
+              <div class="item"><div class="item-dot"></div><div class="item-text">재무멘토링·금융교육 (1:1 컨설팅)<div class="item-tags"><span class="tag tag-self">공통 서비스</span></div></div></div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-head" onclick="v01_toggleSection(this)">
+              <div class="section-icon" style="background:#6366f1"></div>
+              <div class="section-title">C. 자립준비청년 특화 지원</div>
+              <span class="section-badge badge-mid">★★★★☆ 성장</span>
+              <span class="section-toggle">▶</span>
+            </div>
+            <div class="items">
+              <div class="item"><div class="item-dot"></div><div class="item-text">HSBC '아임바리스타' 자립준비청년 자립지원<div class="item-tags"><span class="tag tag-csr">HSBC</span></div></div></div>
+              <div class="item"><div class="item-dot"></div><div class="item-text">카카오페이손해보험 자립준비청년 지원사업<div class="item-tags"><span class="tag tag-csr">CSR</span></div></div></div>
+              <div class="item"><div class="item-dot"></div><div class="item-text">한화생명 자립준비청년 지원사업<div class="item-tags"><span class="tag tag-csr">CSR</span></div></div></div>
+              <div class="item tag-cross"><div class="item-dot"></div><div class="item-text"><strong>함께온기금 자립청년 울타리 대출</strong><div class="item-tags"><span class="tag tag-self">자체기금</span><span class="tag tag-cross">3번 기둥 연계</span></div></div></div>
+              <div class="item"><div class="item-dot"></div><div class="item-text">자립준비청년 재무멘토링·자조모임 지원<div class="item-tags"><span class="tag tag-csr">CSR</span></div></div></div>
+              <div class="item"><div class="item-dot"></div><div class="item-text">아름다운재단·두나무·브라더스키퍼 자립지원 협력<div class="item-tags"><span class="tag tag-csr">CSR 협력</span></div></div></div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-head" onclick="v01_toggleSection(this)">
+              <div class="section-icon" style="background:#f59e0b"></div>
+              <div class="section-title">D. 금융위기가구 긴급지원</div>
+              <span class="section-badge badge-mid">★★★☆☆ 중간</span>
+              <span class="section-toggle open">▶</span>
+            </div>
+            <div class="items open">
+              <div class="item"><div class="item-dot"></div><div class="item-text">긴급생계비 대출 (서울 사회복지공동모금 등)<div class="item-tags"><span class="tag tag-csr">CSR</span></div></div></div>
+              <div class="item"><div class="item-dot"></div><div class="item-text">다중채무 경감·채무조정 지원<div class="item-tags"><span class="tag tag-gov">공공</span></div></div></div>
+              <div class="item"><div class="item-dot"></div><div class="item-text">신용회복 프로그램 (신복위 협력)<div class="item-tags"><span class="tag tag-gov">정부</span></div></div></div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-head" onclick="v01_toggleSection(this)">
+              <div class="section-icon" style="background:#f9a8d4"></div>
+              <div class="section-title">E. 시니어 지원 <span style="font-weight:400;font-size:.75rem;color:#9d174d">(경계 영역)</span></div>
+              <span class="section-badge badge-cross">★★☆☆☆ 경계</span>
+              <span class="section-toggle open">▶</span>
+            </div>
+            <div class="items open">
+              <div class="item tag-cross"><div class="item-dot"></div><div class="item-text">KDB 시니어브릿지센터 운영<div class="item-tags"><span class="tag tag-csr">KDB나눔재단</span><span class="tag tag-cross">사회혁신↔포용금융</span></div></div></div>
+              <div class="item tag-cross"><div class="item-dot"></div><div class="item-text">시니어 사회공헌활동 교육 및 단체활동 지원<div class="item-tags"><span class="tag tag-csr">CSR</span><span class="tag tag-cross">경계</span></div></div></div>
+              <div class="item tag-cross"><div class="item-dot"></div><div class="item-text">라이나50+ 시니어 어워즈 사회공헌 지원<div class="item-tags"><span class="tag tag-csr">CSR</span><span class="tag tag-cross">경계</span></div></div></div>
+            </div>
+          </div>
+
+        </div>
+      </div><!-- /pillar1 -->
+
+      <!-- 기둥 2 -->
+      <div class="pillar p2 ai d3" id="pillar2">
+        <div class="pillar-head" onclick="v01_togglePillar(2)">
+          <div class="pnum">2</div>
+          <div class="ptitle">사회적경제조직 지원 비즈니스<span class="peng">Social Economy · Impact Finance</span></div>
+          <span class="toggle-btn">▼</span>
+        </div>
+        <div class="pillar-body" id="pb2">
+
+          <div class="section">
+            <div class="section-head" onclick="v01_toggleSection(this)">
+              <div class="section-icon" style="background:#16a34a"></div>
+              <div class="section-title">A. 사회적기업 육성 (성장 단계별)</div>
+              <span class="section-badge badge-high">★★★★★ 핵심</span>
+              <span class="section-toggle open">▶</span>
+            </div>
+            <div class="items open">
+              <div class="item"><div class="item-dot"></div><div class="item-text">사회적기업가 육성사업 (인큐베이팅 — 12기~)<div class="item-tags"><span class="tag tag-gov">정부수탁</span><span class="tag tag-gov">고용노동부</span></div></div></div>
+              <div class="item"><div class="item-dot"></div><div class="item-text">알파라운드 공간 지원 (인큐베이팅 허브)<div class="item-tags"><span class="tag tag-self">자체운영</span></div></div></div>
+              <div class="item"><div class="item-dot"></div><div class="item-text">사회적기업 성장솔루션 (경영 멘토링·네트워킹)<div class="item-tags"><span class="tag tag-csr">CSR 협력</span></div></div></div>
+              <div class="item"><div class="item-dot"></div><div class="item-text">사회적기업 임팩트금융 (저금리 대출·사회혁신기금)<div class="item-tags"><span class="tag tag-csr">CSR</span><span class="tag tag-self">자체기금</span></div></div></div>
+              <div class="item"><div class="item-dot"></div><div class="item-text">수출입은행 사회적기업 지원사업<div class="item-tags"><span class="tag tag-gov">정부수탁</span></div></div></div>
+              <div class="item"><div class="item-dot"></div><div class="item-text">법무법인 율촌 사회적기업 육성 협약<div class="item-tags"><span class="tag tag-csr">CSR</span></div></div></div>
+              <div class="item"><div class="item-dot"></div><div class="item-text">IR 투자 연계 (LP 참여·소셜벤처 투자 중개)<div class="item-tags"><span class="tag tag-new">성장단계</span></div></div></div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-head" onclick="v01_toggleSection(this)">
+              <div class="section-icon" style="background:#22c55e"></div>
+              <div class="section-title">B. 로컬조직·지역청년활동가 지원</div>
+              <span class="section-badge badge-mid">★★★☆☆ 중간</span>
+              <span class="section-toggle open">▶</span>
+            </div>
+            <div class="items open">
+              <div class="item"><div class="item-dot"></div><div class="item-text">지역청년활동가 지원사업 (삼성생명, 행안부, 생보사회공헌위)<div class="item-tags"><span class="tag tag-gov">정부</span><span class="tag tag-csr">CSR</span><span class="tag tag-cross">청년↔로컬</span></div></div></div>
+              <div class="item"><div class="item-dot"></div><div class="item-text">바이로컬(BuyLocal) 연계 사업 — 지역 소비·연대<div class="item-tags"><span class="tag tag-new">新방향</span></div></div></div>
+              <div class="item"><div class="item-dot"></div><div class="item-text">하이로컬(Hi-Local) 연계 사업 — 지역 특화 테마<div class="item-tags"><span class="tag tag-new">新방향</span></div></div></div>
+              <div class="item"><div class="item-dot"></div><div class="item-text">인구소멸지역 지역 청년단체 공익활동 지원<div class="item-tags"><span class="tag tag-gov">정부</span></div></div></div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-head" onclick="v01_toggleSection(this)">
+              <div class="section-icon" style="background:#4ade80"></div>
+              <div class="section-title">C. 공익법인·비영리단체·복지시설 지원</div>
+              <span class="section-badge badge-mid">★★★☆☆ 중간</span>
+              <span class="section-toggle open">▶</span>
+            </div>
+            <div class="items open">
+              <div class="item"><div class="item-dot"></div><div class="item-text">비영리 공익법인 목적사업비 배분<div class="item-tags"><span class="tag tag-csr">CSR 배분</span></div></div></div>
+              <div class="item"><div class="item-dot"></div><div class="item-text">공익단체 물품·장비 지원<div class="item-tags"><span class="tag tag-csr">CSR</span></div></div></div>
+              <div class="item tag-cross"><div class="item-dot"></div><div class="item-text"><strong>함께온기금 비영리단체 대출 (for Impact)</strong><div class="item-tags"><span class="tag tag-self">자체기금</span><span class="tag tag-cross">3번 기둥 연계</span></div></div></div>
+              <div class="item"><div class="item-dot"></div><div class="item-text">복지시설 공익 인프라 확충 지원<div class="item-tags"><span class="tag tag-csr">CSR</span></div></div></div>
+            </div>
+          </div>
+
+        </div>
+      </div><!-- /pillar2 -->
+
+      <!-- 기둥 3 -->
+      <div class="pillar p3 ai d4" id="pillar3">
+        <div class="pillar-head" onclick="v01_togglePillar(3)">
+          <div class="pnum">3</div>
+          <div class="ptitle">함께온기금 비즈니스<span class="peng">Social Solidarity Fund · Self-Funded (2024~)</span></div>
+          <span class="toggle-btn">▼</span>
+        </div>
+        <div class="pillar-body" id="pb3">
+
+          <div style="background:#fff7ed;padding:12px 16px;border-bottom:1px solid #fed7aa;font-size:.78rem;color:#92400e;line-height:1.6">
+            <strong>📌 구조:</strong> 시민 후원금 + 대출 상환금이 순환 → 재원 자립 목표<br>
+            <strong>📌 출범:</strong> 2024년 (기관 최초 자체 설계·운영 기금)<br>
+            <strong>📌 단계:</strong> 현재 가능성 검증 단계 — 3개 상품 라인 운영 중
+          </div>
+
+          <div class="section">
+            <div class="section-head" onclick="v01_toggleSection(this)">
+              <div class="section-icon" style="background:#d97706"></div>
+              <div class="section-title">🌱 함께온 for Life (생활안정 금융)</div>
+              <span class="section-badge badge-new">★★★☆☆ 초기</span>
+              <span class="section-toggle">▶</span>
+            </div>
+            <div class="items">
+              <div class="item"><div class="item-dot"></div><div class="item-text">일반 개인소액대출 (긴급자금·생계비)<div class="item-tags"><span class="tag tag-self">자체기금</span></div></div></div>
+              <div class="item tag-cross"><div class="item-dot"></div><div class="item-text"><strong>자립청년 울타리 대출</strong> (보호종료 청년 전용)<div class="item-tags"><span class="tag tag-self">자체기금</span><span class="tag tag-cross">1기둥 C 연계</span></div></div></div>
+              <div class="item tag-cross"><div class="item-dot"></div><div class="item-text"><strong>카카오뱅크 대환 대출</strong> (고금리 전환)<div class="item-tags"><span class="tag tag-self">자체기금</span><span class="tag tag-cross">1기둥 B 연계</span></div></div></div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-head" onclick="v01_toggleSection(this)">
+              <div class="section-icon" style="background:#f59e0b"></div>
+              <div class="section-title">🚀 함께온 for Start (창업육성 금융)</div>
+              <span class="section-badge badge-new">★★☆☆☆ 초기</span>
+              <span class="section-toggle">▶</span>
+            </div>
+            <div class="items">
+              <div class="item tag-cross"><div class="item-dot"></div><div class="item-text"><strong>일반 예비창업자금 대출</strong><div class="item-tags"><span class="tag tag-self">자체기금</span><span class="tag tag-cross">1기둥 A 연계</span></div></div></div>
+              <div class="item"><div class="item-dot"></div><div class="item-text">청년 38국수 (특화 청년창업 대출)<div class="item-tags"><span class="tag tag-self">자체기금</span><span class="tag tag-csr">CSR</span></div></div></div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-head" onclick="v01_toggleSection(this)">
+              <div class="section-icon" style="background:#fbbf24"></div>
+              <div class="section-title">💡 함께온 for Impact (사회적 가치 금융)</div>
+              <span class="section-badge badge-new">★★☆☆☆ 초기</span>
+              <span class="section-toggle">▶</span>
+            </div>
+            <div class="items">
+              <div class="item tag-cross"><div class="item-dot"></div><div class="item-text"><strong>비영리단체 대출</strong><div class="item-tags"><span class="tag tag-self">자체기금</span><span class="tag tag-cross">2기둥 C 연계</span></div></div></div>
+              <div class="item tag-cross"><div class="item-dot"></div><div class="item-text"><strong>사회적기업 대출</strong><div class="item-tags"><span class="tag tag-self">자체기금</span><span class="tag tag-cross">2기둥 A 연계</span></div></div></div>
+            </div>
+          </div>
+
+        </div>
+      </div><!-- /pillar3 -->
+
+    </div><!-- /pillars -->
+
+    <!-- 하단 패널 -->
+    <div class="bottom-panels ai d5">
+
+      <div class="panel">
+        <div class="panel-title">📊 사업 비중 분석 (2022~2025 건수·금액 기준)</div>
+        <div class="weight-row"><div class="weight-label">마이크로크레딧(소상공인)</div><div class="weight-bar-bg"><div class="weight-bar" style="width:92%;background:#006CB7">★★★★★</div></div><div class="weight-count">누적 최대</div></div>
+        <div class="weight-row"><div class="weight-label">청년통합 포용금융</div><div class="weight-bar-bg"><div class="weight-bar" style="width:92%;background:#58C5FF">★★★★★</div></div><div class="weight-count">1,372억 누적</div></div>
+        <div class="weight-row"><div class="weight-label">사회적기업 육성</div><div class="weight-bar-bg"><div class="weight-bar" style="width:75%;background:#7B7875">★★★★☆</div></div><div class="weight-count">18,183건</div></div>
+        <div class="weight-row"><div class="weight-label">자립준비청년 특화</div><div class="weight-bar-bg"><div class="weight-bar" style="width:58%;background:rgba(88,197,255,.6)">★★★★☆</div></div><div class="weight-count">급성장 중</div></div>
+        <div class="weight-row"><div class="weight-label">금융위기가구 긴급지원</div><div class="weight-bar-bg"><div class="weight-bar" style="width:48%;background:rgba(0,108,183,.6)">★★★☆☆</div></div><div class="weight-count">중간</div></div>
+        <div class="weight-row"><div class="weight-label">공익법인·비영리단체</div><div class="weight-bar-bg"><div class="weight-bar" style="width:42%;background:rgba(123,120,117,.7)">★★★☆☆</div></div><div class="weight-count">781건</div></div>
+        <div class="weight-row"><div class="weight-label">로컬조직·지역청년활동가</div><div class="weight-bar-bg"><div class="weight-bar" style="width:30%;background:rgba(123,120,117,.4)">★★☆☆☆</div></div><div class="weight-count">성장 중</div></div>
+        <div class="weight-row"><div class="weight-label">시니어 사회공헌</div><div class="weight-bar-bg"><div class="weight-bar" style="width:22%;background:rgba(88,197,255,.3)">★★☆☆☆</div></div><div class="weight-count">경계·소규모</div></div>
+        <div class="weight-row"><div class="weight-label">함께온기금 (3개 상품)</div><div class="weight-bar-bg"><div class="weight-bar" style="width:18%;background:#ffb347">★★☆☆☆</div></div><div class="weight-count">2024~ 초기</div></div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">⚡ 경계·겹침 사업 정리 (v2.0 설계 시 검토 필요)</div>
+        <div class="overlap-item"><div class="overlap-icon">🔵🟢</div><div class="overlap-text"><strong>자립준비청년 지원</strong><br>포용금융(긴급·대환대출) + 사회혁신(자립생태계 조성) 성격 동시 보유. 2025년부터 독립 임팩트 영역으로 분리.<div class="overlap-pillars"><span class="op-badge" style="background:#dbeafe;color:#1e40af">1기둥 C</span><span class="op-badge" style="background:#fde8d8;color:#9a3412">3기둥 Life</span></div></div></div>
+        <div class="overlap-item"><div class="overlap-icon">🔵🟠</div><div class="overlap-text"><strong>함께온기금 예비창업자금</strong><br>1기둥 마이크로크레딧과 동일 수혜계층이지만 재원·운영 주체 다름. 통합/분리 검토 필요.<div class="overlap-pillars"><span class="op-badge" style="background:#dbeafe;color:#1e40af">1기둥 A</span><span class="op-badge" style="background:#fde8d8;color:#9a3412">3기둥 Start</span></div></div></div>
+        <div class="overlap-item"><div class="overlap-icon">🟢🟠</div><div class="overlap-text"><strong>함께온기금 비영리·사회적기업 대출</strong><br>2기둥 사회혁신기금과 중복 가능성. 자체기금과 CSR기금의 역할 명확화 필요.<div class="overlap-pillars"><span class="op-badge" style="background:#dcfce7;color:#15803d">2기둥 A·C</span><span class="op-badge" style="background:#fde8d8;color:#9a3412">3기둥 Impact</span></div></div></div>
+        <div class="overlap-item"><div class="overlap-icon">🔵🟣</div><div class="overlap-text"><strong>시니어 사회공헌 지원</strong><br>금융취약계층(포용금융) + 사회혁신(지역공헌 활동주체) 양면 존재. 내부 토론에서도 위치 애매.<div class="overlap-pillars"><span class="op-badge" style="background:#dbeafe;color:#1e40af">1기둥 E</span><span class="op-badge" style="background:#dcfce7;color:#15803d">2기둥 B</span></div></div></div>
+        <div class="overlap-item"><div class="overlap-icon">🔵🟢</div><div class="overlap-text"><strong>소셜벤처 소상공인</strong><br>사회적 가치를 만드는 소상공인은 1기둥(소상공인 창업)과 2기둥(사회적기업) 양쪽에 걸침.<div class="overlap-pillars"><span class="op-badge" style="background:#dbeafe;color:#1e40af">1기둥 A</span><span class="op-badge" style="background:#dcfce7;color:#15803d">2기둥 A</span></div></div></div>
+      </div>
+
+    </div><!-- /bottom-panels -->
+
+    <div class="v2-panel ai d5">
+      <div class="v2-title">🔧 v2.0으로 나아가기 위한 수정 포인트</div>
+      <div class="v2-grid">
+        <div class="v2-card"><div class="v2-card-title">① 분류 기준 통일 (중요도 높음)</div><div class="v2-card-body"><li>현재 '대상자별' + '사업성격별'이 혼재 → 하나로 통일 권장</li><li>제안: <strong>성격별 대분류</strong> (포용금융 vs 생태계육성) + <strong>대상별 중분류</strong></li><li>재원 유형은 별도 태그로 표시</li></div></div>
+        <div class="v2-card"><div class="v2-card-title">② 시니어·경계 사업 위치 결정</div><div class="v2-card-body"><li>시니어 → 1기둥(취약계층) or 2기둥(사회혁신 활동주체)로 명확히 배정</li><li>3.23 피드백: "세대별로 묶어 청년-시니어를 나란히 배치" 검토</li><li>소셜벤처 소상공인 → 기준 정의 후 2기둥 이동 검토</li></div></div>
+        <div class="v2-card"><div class="v2-card-title">③ 함께온기금 독립성·연계 명확화</div><div class="v2-card-body"><li>3기둥을 '재원 자립 실험 기금'으로 위치 정의 확정</li><li>1·2기둥과 겹치는 상품은 '자체기금 버전'임을 명시</li><li>기금 성장에 따라 독립 강화 or 통합 여부 결정</li></div></div>
+      </div>
+    </div>
+
+  </div><!-- /canvas -->
+
+  <div class="panel-footer">
+    분석 기반: 2022~2024 연차보고서 · 20주년 백서 · 기관소개서 · 함께온기금 명분서 · 2025 사업실적<br>
+    v1.0 · 2026.03.24
+  </div>
+
+</div><!-- /panel-v01 -->
+
+<!-- ════════════ V02 PANEL ════════════ -->
+<div id="panel-v02" class="ver-panel ver-v02">
+
+  <div class="main">
+
+    <div class="root-wrap">
+      <div class="root-card ai d1">
+        <div class="root-name">(사)함께만드는세상 · 사회연대은행</div>
+        <div class="root-since">사회적금융을 통해 더불어 함께 사는 건강한 공동체를 만든다</div>
+      </div>
+      <div class="branch ai d2">
+        <div class="branch-tick"><span></span><span></span><span></span></div>
+      </div>
+    </div>
+
+    <div class="columns">
+
+      <!-- COL 1 -->
+      <div class="ai d2">
+        <div class="col-title ct-a">
+          <div class="col-title-text">금융소외계층 지원</div>
+          <span class="col-title-eng">Inclusive Finance for the Underserved</span>
+        </div>
+        <div class="lane">
+          <div class="sec-label">대상</div>
+          <div class="card-stack">
+
+            <div class="card card-b" onclick="v02_toggleCard(this)">
+              <div class="card-title">🏪 소상공인</div>
+              <div class="card-desc">사업준비 · 사업위기 · 재기</div>
+              <div class="trig"><div class="trig-icon"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M9 18l6-6-6-6"/></svg></div>세부사업 9건</div>
+              <div class="dlist"><div class="dlist-inner">
+                <div class="ditem"><div class="ditem-name">서울형 마이크로크레딧 창업지원사업</div><div class="ditem-tags"><span class="tag t-gov">서울시 수탁</span></div></div>
+                <div class="ditem"><div class="ditem-name">강남구 희망실현창구 창업지원사업</div><div class="ditem-tags"><span class="tag t-gov">강남구 수탁</span></div></div>
+                <div class="ditem"><div class="ditem-name">경기 극저신용대출 2.0 (광역 확장)</div><div class="ditem-tags"><span class="tag t-gov">경기도 수탁</span><span class="tag t-new">2026新</span></div></div>
+                <div class="ditem"><div class="ditem-name">저소득 소상공인 희망대출</div><div class="ditem-tags"><span class="tag t-csr">KDB나눔재단</span></div></div>
+                <div class="ditem"><div class="ditem-name">SGI서울보증 소상공인 대출지원</div><div class="ditem-tags"><span class="tag t-csr">CSR</span></div></div>
+                <div class="ditem"><div class="ditem-name">소상공인 경영환경 개선지원</div><div class="ditem-tags"><span class="tag t-csr">카카오</span></div></div>
+                <div class="ditem"><div class="ditem-name">JP모건 소상공인 지원사업</div><div class="ditem-tags"><span class="tag t-csr">JP모건</span></div></div>
+                <div class="ditem"><div class="ditem-name">HSBC 저소득 청년창업가 지원사업</div><div class="ditem-tags"><span class="tag t-csr">HSBC</span></div></div>
+                <div class="ditem"><div class="ditem-name">디지털 마케팅·역량강화 교육 / 온라인 판로개척</div><div class="ditem-tags"><span class="tag t-csr">성장지원</span></div></div>
+              </div></div>
+            </div>
+
+            <div class="card card-b" onclick="v02_toggleCard(this)">
+              <div class="card-title">👤 청년·통합지원</div>
+              <div class="card-desc">자립준비 · 금융위기 · 지역청년</div>
+              <div class="trig"><div class="trig-icon"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M9 18l6-6-6-6"/></svg></div>세부사업 11건</div>
+              <div class="dlist"><div class="dlist-inner">
+                <div class="ditem"><div class="ditem-name">청년 고금리 대환대출 — 두나무 넥스트스테퍼즈</div><div class="ditem-tags"><span class="tag t-csr">두나무</span></div></div>
+                <div class="ditem"><div class="ditem-name">청년 긴급생계비 대출 (신복위 등)</div><div class="ditem-tags"><span class="tag t-gov">정부</span></div></div>
+                <div class="ditem"><div class="ditem-name">카카오뱅크 대환 대출 (고금리 전환)</div><div class="ditem-tags"><span class="tag t-csr">CSR</span></div></div>
+                <div class="ditem"><div class="ditem-name">청년 자산형성·신용형성 프로그램 (씨앗저축)</div><div class="ditem-tags"><span class="tag t-csr">CSR</span></div></div>
+                <div class="ditem"><div class="ditem-name">재무멘토링·금융교육 (1:1 컨설팅)</div><div class="ditem-tags"><span class="tag t-self">공통서비스</span></div></div>
+                <div class="ditem"><div class="ditem-name">HSBC '아임바리스타' 자립준비청년 자립지원</div><div class="ditem-tags"><span class="tag t-csr">HSBC</span></div></div>
+                <div class="ditem"><div class="ditem-name">카카오페이손해보험 자립준비청년 지원</div><div class="ditem-tags"><span class="tag t-csr">CSR</span></div></div>
+                <div class="ditem"><div class="ditem-name">한화생명 자립준비청년 지원사업</div><div class="ditem-tags"><span class="tag t-csr">CSR</span></div></div>
+                <div class="ditem"><div class="ditem-name">자립준비청년 재무멘토링·자조모임</div><div class="ditem-tags"><span class="tag t-csr">CSR</span></div></div>
+                <div class="ditem"><div class="ditem-name">아름다운재단·두나무·브라더스키퍼 자립지원</div><div class="ditem-tags"><span class="tag t-csr">협력</span></div></div>
+                <div class="ditem"><div class="ditem-name">함께온기금 자립청년 울타리 대출</div><div class="ditem-tags"><span class="tag t-self">자체기금</span></div></div>
+              </div></div>
+            </div>
+
+            <div class="card card-b" onclick="v02_toggleCard(this)">
+              <div class="card-title">🏠 금융위기 가구</div>
+              <div class="card-desc">다중채무 · 연체위기 · 생계비</div>
+              <div class="trig"><div class="trig-icon"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M9 18l6-6-6-6"/></svg></div>세부사업 3건</div>
+              <div class="dlist"><div class="dlist-inner">
+                <div class="ditem"><div class="ditem-name">긴급생계비 대출 (서울 사회복지공동모금 등)</div><div class="ditem-tags"><span class="tag t-csr">CSR</span></div></div>
+                <div class="ditem"><div class="ditem-name">다중채무 경감·채무조정 지원</div><div class="ditem-tags"><span class="tag t-gov">공공</span></div></div>
+                <div class="ditem"><div class="ditem-name">신용회복 프로그램 (신복위 협력)</div><div class="ditem-tags"><span class="tag t-gov">정부</span></div></div>
+              </div></div>
+            </div>
+          </div>
+
+          <div class="arrow-row"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M19 12l-7 7-7-7"/></svg></div>
+
+          <div class="sec-label">솔루션</div>
+          <div class="card-stack">
+            <div class="card card-b card-static"><div class="card-title">💳 대출지원 — 소상공인</div><div class="card-desc">사업자금 · 교육·멘토링 · 성장지원</div></div>
+            <div class="card card-b card-static"><div class="card-title">💳 대출지원 — 청년</div><div class="card-desc">생계자금 · 교육·멘토링 · 창업자금</div></div>
+            <div class="card card-b card-static"><div class="card-title">💳 대출지원 — 위기가구</div><div class="card-desc">생계자금 · 교육·멘토링</div></div>
+          </div>
+
+          <div class="h-sep">
+            <div class="card card-b" onclick="v02_toggleCard(this)">
+              <div class="card-title">👴 시니어 지원</div>
+              <div class="card-desc">사회공헌활동 · 세대 간 연결</div>
+              <div class="trig"><div class="trig-icon"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M9 18l6-6-6-6"/></svg></div>세부사업 3건</div>
+              <div class="dlist"><div class="dlist-inner">
+                <div class="ditem"><div class="ditem-name">KDB 시니어브릿지센터 운영</div><div class="ditem-tags"><span class="tag t-csr">KDB나눔재단</span></div></div>
+                <div class="ditem"><div class="ditem-name">시니어 사회공헌활동 교육 및 단체활동 지원</div><div class="ditem-tags"><span class="tag t-csr">CSR</span></div></div>
+                <div class="ditem"><div class="ditem-name">라이나50+ 시니어 어워즈 사회공헌</div><div class="ditem-tags"><span class="tag t-csr">CSR</span></div></div>
+              </div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- COL 2 -->
+      <div class="ai d3">
+        <div class="col-title ct-b">
+          <div class="col-title-text">사회적경제 생태계 지원</div>
+          <span class="col-title-eng">Social Economy Ecosystem Support</span>
+        </div>
+        <div class="lane">
+          <div class="sec-label">솔루션</div>
+          <div class="card-stack">
+
+            <div class="card card-g" onclick="v02_toggleCard(this)">
+              <div class="card-title">🌱 육성</div>
+              <div class="card-desc">창업자금 · 인프라(공간) · 교육·컨설팅·멘토링</div>
+              <div class="trig"><div class="trig-icon"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M9 18l6-6-6-6"/></svg></div>세부사업 5건</div>
+              <div class="dlist"><div class="dlist-inner">
+                <div class="ditem"><div class="ditem-name">사회적기업가 육성사업 (인큐베이팅 12기~)</div><div class="ditem-tags"><span class="tag t-gov">고용노동부</span></div></div>
+                <div class="ditem"><div class="ditem-name">알파라운드 공간 지원 (인큐베이팅 허브)</div><div class="ditem-tags"><span class="tag t-self">자체운영</span></div></div>
+                <div class="ditem"><div class="ditem-name">사회적기업 성장솔루션 (경영멘토링·네트워킹)</div><div class="ditem-tags"><span class="tag t-csr">CSR</span></div></div>
+                <div class="ditem"><div class="ditem-name">수출입은행 사회적기업 지원사업</div><div class="ditem-tags"><span class="tag t-gov">수은 수탁</span></div></div>
+                <div class="ditem"><div class="ditem-name">법무법인 율촌 사회적기업 육성 협약</div><div class="ditem-tags"><span class="tag t-csr">CSR</span></div></div>
+              </div></div>
+            </div>
+
+            <div class="card card-g" onclick="v02_toggleCard(this)">
+              <div class="card-title">💰 금융지원</div>
+              <div class="card-desc">투자 자본 연계 · 사업자금 대출</div>
+              <div class="trig"><div class="trig-icon"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M9 18l6-6-6-6"/></svg></div>세부사업 3건</div>
+              <div class="dlist"><div class="dlist-inner">
+                <div class="ditem"><div class="ditem-name">사회적기업 임팩트금융 (저금리 대출·사회혁신기금)</div><div class="ditem-tags"><span class="tag t-csr">CSR</span><span class="tag t-self">자체기금</span></div></div>
+                <div class="ditem"><div class="ditem-name">IR 투자 연계 (LP 참여·소셜벤처 투자 중개)</div><div class="ditem-tags"><span class="tag t-new">성장단계</span></div></div>
+                <div class="ditem"><div class="ditem-name">비영리 공익법인 목적사업비 배분</div><div class="ditem-tags"><span class="tag t-csr">CSR 배분</span></div></div>
+              </div></div>
+            </div>
+
+            <div class="card card-g" onclick="v02_toggleCard(this)">
+              <div class="card-title">📍 로컬</div>
+              <div class="card-desc">사업자금 · 인프라 · 교육·컨설팅 · 판로 연결</div>
+              <div class="trig"><div class="trig-icon"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M9 18l6-6-6-6"/></svg></div>세부사업 4건</div>
+              <div class="dlist"><div class="dlist-inner">
+                <div class="ditem"><div class="ditem-name">지역청년활동가 지원사업 (삼성생명·행안부·생보사회공헌위)</div><div class="ditem-tags"><span class="tag t-gov">정부</span><span class="tag t-csr">CSR</span></div></div>
+                <div class="ditem"><div class="ditem-name">바이로컬(BuyLocal) 연계 — 지역 소비·연대</div><div class="ditem-tags"><span class="tag t-new">新방향</span></div></div>
+                <div class="ditem"><div class="ditem-name">하이로컬(Hi-Local) 연계 — 지역 특화 테마</div><div class="ditem-tags"><span class="tag t-new">新방향</span></div></div>
+                <div class="ditem"><div class="ditem-name">인구소멸지역 지역 청년단체 공익활동 지원</div><div class="ditem-tags"><span class="tag t-gov">정부</span></div></div>
+              </div></div>
+            </div>
+          </div>
+
+          <div class="arrow-row"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M19 12l-7 7-7-7"/></svg></div>
+
+          <div class="sec-label">대상</div>
+          <div class="card-stack">
+            <div class="card card-g card-static"><div class="card-title">육성(인큐베이팅)</div><div class="card-desc">사회적기업·소셜벤처 · 로컬기업·청년 · 비영리단체</div></div>
+            <div class="card card-g card-static"><div class="card-title">금융지원</div><div class="card-desc">사회적기업·소셜벤처 · 로컬기업·청년 · 비영리단체</div></div>
+            <div class="card card-g" onclick="v02_toggleCard(this)">
+              <div class="card-title">공익활동 자원</div>
+              <div class="card-desc">사회적기업·소셜벤처</div>
+              <div class="trig"><div class="trig-icon"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M9 18l6-6-6-6"/></svg></div>세부사업 2건</div>
+              <div class="dlist"><div class="dlist-inner">
+                <div class="ditem"><div class="ditem-name">공익단체 물품·장비 지원</div><div class="ditem-tags"><span class="tag t-csr">CSR</span></div></div>
+                <div class="ditem"><div class="ditem-name">복지시설 공익 인프라 확충 지원</div><div class="ditem-tags"><span class="tag t-csr">CSR</span></div></div>
+              </div></div>
+            </div>
+            <div class="card card-g" onclick="v02_toggleCard(this)">
+              <div class="card-title">로컬 지원</div>
+              <div class="card-desc">로컬기업·청년 · 비영리단체</div>
+              <div class="trig"><div class="trig-icon"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M9 18l6-6-6-6"/></svg></div>세부사업 1건</div>
+              <div class="dlist"><div class="dlist-inner">
+                <div class="ditem"><div class="ditem-name">함께온기금 비영리단체 대출 (for Impact)</div><div class="ditem-tags"><span class="tag t-self">자체기금</span></div></div>
+              </div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- COL 3 -->
+      <div class="ai d4">
+        <div class="col-title ct-c">
+          <div class="col-title-text">함께온기금</div>
+          <span class="col-title-eng">Social Solidarity Fund · 2024~</span>
+        </div>
+        <div class="lane">
+          <div class="fund-intro">
+            <strong>자체 설계·운영 순환형 기금</strong>
+            시민 후원금 + 대출 상환금 순환<br>재원 자립 목표 · 가능성 검증 단계
+          </div>
+          <div class="card-stack">
+            <div class="card card-g" onclick="v02_toggleCard(this)">
+              <div class="card-title">🚀 함께온 스타트</div>
+              <div class="card-desc">(저소득) 예비창업자 · 초기창업 지원</div>
+              <div class="trig"><div class="trig-icon"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M9 18l6-6-6-6"/></svg></div>세부사업 2건</div>
+              <div class="dlist"><div class="dlist-inner">
+                <div class="ditem"><div class="ditem-name">일반 예비창업자금 대출</div><div class="ditem-tags"><span class="tag t-self">자체기금</span></div></div>
+                <div class="ditem"><div class="ditem-name">청년 38국수 (특화 청년창업 대출)</div><div class="ditem-tags"><span class="tag t-self">자체기금</span></div></div>
+              </div></div>
+            </div>
+            <div class="card card-g" onclick="v02_toggleCard(this)">
+              <div class="card-title">🌱 함께온 라이프</div>
+              <div class="card-desc">사회적금융 대출 · 개인소액 · 금융회복</div>
+              <div class="trig"><div class="trig-icon"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M9 18l6-6-6-6"/></svg></div>세부사업 3건</div>
+              <div class="dlist"><div class="dlist-inner">
+                <div class="ditem"><div class="ditem-name">일반 개인소액대출 (긴급자금·생계비)</div><div class="ditem-tags"><span class="tag t-self">자체기금</span></div></div>
+                <div class="ditem"><div class="ditem-name">자립청년 울타리 대출 (보호종료 청년 전용)</div><div class="ditem-tags"><span class="tag t-self">자체기금</span></div></div>
+                <div class="ditem"><div class="ditem-name">카카오뱅크 대환 대출 (고금리 전환)</div><div class="ditem-tags"><span class="tag t-self">자체기금</span></div></div>
+              </div></div>
+            </div>
+            <div class="card card-g" onclick="v02_toggleCard(this)">
+              <div class="card-title">💡 함께온 임팩트</div>
+              <div class="card-desc">사회적경제조직 · 성장지원 · 사회책임금융</div>
+              <div class="trig"><div class="trig-icon"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M9 18l6-6-6-6"/></svg></div>세부사업 2건</div>
+              <div class="dlist"><div class="dlist-inner">
+                <div class="ditem"><div class="ditem-name">비영리단체 대출</div><div class="ditem-tags"><span class="tag t-self">자체기금</span></div></div>
+                <div class="ditem"><div class="ditem-name">사회적기업 대출</div><div class="ditem-tags"><span class="tag t-self">자체기금</span></div></div>
+              </div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /columns -->
+
+    <!-- BOTTOM -->
+    <div class="bottom ai d5">
+      <div class="panel">
+        <div class="panel-hd"><div class="panel-hd-dot"></div>사업 비중 분석</div>
+        <div class="w-item"><div class="w-label">마이크로크레딧 (소상공인)</div><div class="w-track"><div class="w-fill" data-pct=".92" style="background:#006CB7"></div></div><div class="w-val">누적 최대</div></div>
+        <div class="w-item"><div class="w-label">청년통합 포용금융</div><div class="w-track"><div class="w-fill" data-pct=".90" style="background:#58C5FF"></div></div><div class="w-val">1,372억</div></div>
+        <div class="w-item"><div class="w-label">사회적기업 육성</div><div class="w-track"><div class="w-fill" data-pct=".75" style="background:#7B7875"></div></div><div class="w-val">18,183건</div></div>
+        <div class="w-item"><div class="w-label">자립준비청년 특화</div><div class="w-track"><div class="w-fill" data-pct=".58" style="background:rgba(88,197,255,.6)"></div></div><div class="w-val">급성장</div></div>
+        <div class="w-item"><div class="w-label">금융위기가구 긴급지원</div><div class="w-track"><div class="w-fill" data-pct=".45" style="background:rgba(0,108,183,.6)"></div></div><div class="w-val">중간</div></div>
+        <div class="w-item"><div class="w-label">공익법인·비영리단체</div><div class="w-track"><div class="w-fill" data-pct=".40" style="background:rgba(123,120,117,.7)"></div></div><div class="w-val">781건</div></div>
+        <div class="w-item"><div class="w-label">로컬·지역청년활동가</div><div class="w-track"><div class="w-fill" data-pct=".28" style="background:rgba(123,120,117,.4)"></div></div><div class="w-val">성장 중</div></div>
+        <div class="w-item"><div class="w-label">시니어 사회공헌</div><div class="w-track"><div class="w-fill" data-pct=".20" style="background:rgba(88,197,255,.3)"></div></div><div class="w-val">소규모</div></div>
+        <div class="w-item"><div class="w-label">함께온기금 (3개 상품)</div><div class="w-track"><div class="w-fill" data-pct=".16" style="background:#ffb347"></div></div><div class="w-val">2024~ 초기</div></div>
+      </div>
+      <div class="panel">
+        <div class="panel-hd"><div class="panel-hd-dot"></div>재원 유형 구분</div>
+        <div class="src-stack">
+          <div class="src-item"><div class="src-icon">🏛️</div><div class="src-text"><strong>정부·지자체 수탁</strong>서울시, 경기도, 강남구, 고용노동부, 행안부, 수출입은행</div></div>
+          <div class="src-item"><div class="src-icon">🏢</div><div class="src-text"><strong>기업 CSR 협력</strong>두나무, 카카오, HSBC, KDB, 삼성생명, 한화, JP모건, SGI, 카카오뱅크</div></div>
+          <div class="src-item"><div class="src-icon">🌱</div><div class="src-text"><strong>자체 기금 (함께온기금)</strong>2024~ 자체 모금·순환 · 시민 후원금 + 대출 상환금 순환 구조</div></div>
+          <div class="src-item"><div class="src-icon">🤝</div><div class="src-text"><strong>공동모금·재단 협력</strong>아름다운재단, 사회복지공동모금회, 브라더스키퍼 등</div></div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /main -->
+
+  <div class="panel-footer">
+    분석 기반: 2022–2024 연차보고서 · 20주년 백서 · 기관소개서 · 함께온기금 명분서·브랜드 아키텍처 · 2025 사업실적<br>
+    v2.0 · 2026.03
+  </div>
+
+</div><!-- /panel-v02 -->
+
+<script>
+/* ─── Version Switching ─── */
+const VERSIONS = {
+  v01: { badge: 'v 1.0 · 2026.03.24' },
+  v02: { badge: 'v 2.0 · 2026.03.31' }
+};
+
+function switchVersion(ver) {
+  // Hide all panels
+  document.querySelectorAll('.ver-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.ctrl-legend').forEach(l => l.classList.remove('active'));
+
+  // Show selected
+  document.getElementById('panel-' + ver).classList.add('active');
+  document.getElementById('legend-' + ver).classList.add('active');
+  document.getElementById('hero-badge').textContent = VERSIONS[ver].badge || VERSIONS[ver];
+
+  // V01-only controls
+  const v1btns = document.querySelectorAll('.v1only');
+  v1btns.forEach(b => b.style.display = ver === 'v01' ? 'inline-flex' : 'none');
+
+  // Reset highlight on version switch
+  if (ver === 'v02') {
+    _v01HighlightOn = false;
+    document.getElementById('btn-overlap').textContent = '⚡ 경계 하이라이트';
+  }
+
+  // Trigger V02 bar animation
+  if (ver === 'v02') {
+    setTimeout(() => {
+      document.querySelectorAll('#panel-v02 .w-fill').forEach(bar => {
+        bar.style.transform = `scaleX(${bar.dataset.pct})`;
+      });
+    }, 400);
+  }
+}
+
+/* ─── Shared Expand / Collapse ─── */
+function expandAll() {
+  const active = document.querySelector('.ver-panel.active');
+  // V01
+  active.querySelectorAll('.items').forEach(e => e.classList.add('open'));
+  active.querySelectorAll('.section-toggle').forEach(e => e.classList.add('open'));
+  active.querySelectorAll('.pillar-body').forEach(e => e.classList.remove('collapsed'));
+  active.querySelectorAll('.pillar-head').forEach(e => e.classList.remove('collapsed'));
+  // V02
+  active.querySelectorAll('.dlist').forEach(e => e.classList.add('open'));
+  active.querySelectorAll('.trig').forEach(e => e.classList.add('open'));
+}
+
+function collapseAll() {
+  const active = document.querySelector('.ver-panel.active');
+  // V01
+  active.querySelectorAll('.items').forEach(e => e.classList.remove('open'));
+  active.querySelectorAll('.section-toggle').forEach(e => e.classList.remove('open'));
+  // V02
+  active.querySelectorAll('.dlist').forEach(e => e.classList.remove('open'));
+  active.querySelectorAll('.trig').forEach(e => e.classList.remove('open'));
+}
+
+/* ─── V01 functions ─── */
+function v01_toggleSection(head) {
+  const items = head.nextElementSibling;
+  const toggle = head.querySelector('.section-toggle');
+  const open = items.classList.contains('open');
+  items.classList.toggle('open', !open);
+  toggle.classList.toggle('open', !open);
+}
+
+function v01_togglePillar(n) {
+  const pb = document.getElementById('pb' + n);
+  const head = document.querySelector('#pillar' + n + ' .pillar-head');
+  pb.classList.toggle('collapsed');
+  head.classList.toggle('collapsed');
+}
+
+let _v01HighlightOn = false;
+function highlightOverlap() {
+  _v01HighlightOn = !_v01HighlightOn;
+  const btn = document.getElementById('btn-overlap');
+  if (_v01HighlightOn) {
+    expandAll();
+    document.querySelectorAll('#panel-v01 .tag-cross').forEach(el => {
+      el.closest('.item') && (el.closest('.item').style.cssText = 'background:#fce7f3;border-left:3px solid #ec4899');
+    });
+    btn.textContent = '⚡ 하이라이트 해제';
+  } else {
+    document.querySelectorAll('#panel-v01 .item').forEach(el => el.style.cssText = '');
+    btn.textContent = '⚡ 경계 하이라이트';
+  }
+}
+
+/* ─── V02 functions ─── */
+function v02_toggleCard(card) {
+  const trig = card.querySelector('.trig');
+  const list = card.querySelector('.dlist');
+  if (!trig || !list) return;
+  const open = list.classList.contains('open');
+  list.classList.toggle('open', !open);
+  trig.classList.toggle('open', !open);
+}
+
+/* ─── Init ─── */
+// Default: show V01, legend V01
+document.getElementById('legend-v01').classList.add('active');
+
+// V02 weight bars on scroll
+new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    e.target.querySelectorAll('.w-fill').forEach(bar => {
+      bar.style.transform = `scaleX(${bar.dataset.pct})`;
+    });
+  });
+}, { threshold: 0.2 }).observe(document.querySelector('#panel-v02 .bottom') || document.body);
+</script>
+</body>
+</html>
