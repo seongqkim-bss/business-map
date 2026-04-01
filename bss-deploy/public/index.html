@@ -46,8 +46,8 @@ html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
 body{font-family:'Pretendard',sans-serif;background:#FFFFFF;color:#000000;min-height:100vh;}
 
 /* ─── HERO ─── */
-.hero{background:#26257C;padding:0 var(--sp10)}
-.hero-inner{max-width:1200px;margin:0 auto;padding:18px 0 16px;display:flex;align-items:center;justify-content:space-between;gap:var(--sp6)}
+.hero{background:#26257C;width:100%}
+.hero-inner{max-width:1200px;margin:0 auto;padding:18px var(--sp10) 16px;display:flex;align-items:center;justify-content:space-between;gap:var(--sp6)}
 .hero-eyebrow{font-size:11px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:rgba(88,197,255,.7);margin-bottom:4px}
 .hero-title{font-size:28px;font-weight:800;color:#fff;letter-spacing:-0.8px;line-height:1.15}
 .hero-title em{font-style:normal;color:rgba(88,197,255,.7);font-weight:500;font-size:16px;display:inline;margin-left:10px;letter-spacing:0}
@@ -94,7 +94,7 @@ body{font-family:'Pretendard',sans-serif;background:#FFFFFF;color:#000000;min-he
 .ver-v01 .r-sub{font-size:13px;color:#7B7875;margin-top:3px}
 .ver-v01 .pillars{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
 .ver-v01 .pillar{border-radius:var(--r12);overflow:hidden;border:1px solid var(--BDR)}
-.ver-v01 .pillar-head{padding:14px 16px;color:#fff;font-weight:700;font-size:14px;display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none}
+.ver-v01 .pillar-head{padding:12px 16px;color:#fff;font-weight:700;font-size:13px;display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none}
 .ver-v01 .pnum{width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
 .ver-v01 .ptitle{flex:1}
 .ver-v01 .peng{font-size:10px;opacity:.6;font-weight:400;display:block;margin-top:1px}
@@ -108,7 +108,7 @@ body{font-family:'Pretendard',sans-serif;background:#FFFFFF;color:#000000;min-he
 .ver-v01 .section-head{padding:10px 14px;display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none;transition:background .15s}
 .ver-v01 .section-head:hover{background:var(--G08)}
 .ver-v01 .section-icon{width:7px;height:7px;border-radius:50%;flex-shrink:0}
-.ver-v01 .section-title{font-size:14px;font-weight:700;color:var(--TXT);flex:1;letter-spacing:-.2px}
+.ver-v01 .section-title{font-size:13px;font-weight:700;color:var(--TXT);flex:1;letter-spacing:-.2px}
 .ver-v01 .section-badge{font-size:10px;padding:2px 6px;border-radius:10px;font-weight:600;white-space:nowrap}
 .ver-v01 .badge-high{background:rgba(88,197,255,.15);color:#006CB7}
 .ver-v01 .badge-mid{background:rgba(88,197,255,.12);color:#006CB7}
@@ -181,8 +181,8 @@ body{font-family:'Pretendard',sans-serif;background:#FFFFFF;color:#000000;min-he
 .ver-v02 .card{border-radius:var(--r12);padding:var(--sp4);transition:border-color .15s;position:relative}
 .ver-v02 .card:not(.card-static){cursor:pointer}
 .ver-v02 .card:not(.card-static):hover{border-color:var(--B)!important}
-.ver-v02 .card-b{background:#fff;border:1px solid var(--BDR)}
-.ver-v02 .card-g{background:#fff;border:1px solid var(--B)}
+.ver-v02 .card-b,.ver-v02 .card-g{background:#fff;border:1px solid var(--BDR)}
+.ver-v02 .card.is-open{border-color:var(--B)!important}
 .ver-v02 .card-static{opacity:.65}
 .ver-v02 .card-title{font-size:14px;font-weight:700;letter-spacing:-.2px;color:var(--TXT)}
 .ver-v02 .card-desc{font-size:11px;color:var(--TXT2);margin-top:3px;line-height:1.5}
@@ -225,10 +225,12 @@ body{font-family:'Pretendard',sans-serif;background:#FFFFFF;color:#000000;min-he
   .hero-title{font-size:22px}
   .ctrl-inner{padding:0 var(--sp6)}
   .ver-v02 .main{padding:var(--sp6) var(--sp6) 48px}
+  /* branch 트리선 — 1컬럼 레이아웃에서 숨김 */
+  .ver-v02 .branch{display:none}
 }
 @media(max-width:600px){
   .ctrl-legend{display:none!important}
-  .hero-inner{flex-direction:column;align-items:flex-start;gap:8px;padding:14px 0}
+  .hero-inner{flex-direction:column;align-items:flex-start;gap:8px;padding:12px var(--sp4) 14px}
   .hero-right{text-align:left}
   .hero-title{font-size:20px}
   .hero-title em{display:block;margin-left:0;margin-top:4px;font-size:13px}
@@ -237,6 +239,9 @@ body{font-family:'Pretendard',sans-serif;background:#FFFFFF;color:#000000;min-he
   .ver-v02 .w-label{width:100%;font-size:12px}
   .ver-v02 .w-track{flex:auto;width:100%;order:2}
   .ver-v02 .w-val{width:auto;text-align:left;order:3;font-size:11px}
+  /* V01 태그 모바일 줄바꿈 */
+  .ver-v01 .item{flex-wrap:wrap}
+  .ver-v01 .item-tags{width:100%;margin-top:4px}
 }
 
 /* ─── ANIMATIONS ─── */
@@ -273,9 +278,8 @@ body{font-family:'Pretendard',sans-serif;background:#FFFFFF;color:#000000;min-he
       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 15l-6-6-6 6"/></svg>전체 접기
     </button>
     <div class="ctrl-div"></div>
-    <button class="ctrl-btn v1only" id="btn-overlap" onclick="highlightOverlap()">경계 하이라이트</button>
 
-    <div class="ctrl-legend" id="legend-v01">
+<div class="ctrl-legend" id="legend-v01">
       <div class="leg"><div class="leg-pip" style="background:rgba(88,197,255,.5)"></div>정부수탁</div>
       <div class="leg"><div class="leg-pip" style="background:rgba(88,197,255,.3)"></div>CSR</div>
       <div class="leg"><div class="leg-pip" style="background:rgba(88,197,255,.7)"></div>자체기금</div>
@@ -895,7 +899,6 @@ function switchVersion(ver) {
   v1btns.forEach(b => b.style.display = ver === 'v01' ? 'inline-flex' : 'none');
   if (ver === 'v02') {
     _v01HighlightOn = false;
-    document.getElementById('btn-overlap').textContent = '경계 하이라이트';
     setTimeout(() => {
       document.querySelectorAll('#panel-v02 .w-fill').forEach(bar => {
         bar.style.transform = `scaleX(${bar.dataset.pct})`;
@@ -912,6 +915,7 @@ function expandAll() {
   active.querySelectorAll('.pillar-head').forEach(e => e.classList.remove('collapsed'));
   active.querySelectorAll('.dlist').forEach(e => e.classList.add('open'));
   active.querySelectorAll('.trig').forEach(e => e.classList.add('open'));
+  active.querySelectorAll('.card:not(.card-static)').forEach(c => c.classList.add('is-open'));
 }
 
 function collapseAll() {
@@ -920,6 +924,7 @@ function collapseAll() {
   active.querySelectorAll('.section-toggle').forEach(e => e.classList.remove('open'));
   active.querySelectorAll('.dlist').forEach(e => e.classList.remove('open'));
   active.querySelectorAll('.trig').forEach(e => e.classList.remove('open'));
+  active.querySelectorAll('.card').forEach(c => c.classList.remove('is-open'));
 }
 
 function v01_toggleSection(head) {
@@ -960,6 +965,7 @@ function v02_toggleCard(card) {
   const open = list.classList.contains('open');
   list.classList.toggle('open', !open);
   trig.classList.toggle('open', !open);
+  card.classList.toggle('is-open', !open);
 }
 
 /* ─── Init: default v02 ─── */
